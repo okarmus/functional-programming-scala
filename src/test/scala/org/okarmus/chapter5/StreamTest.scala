@@ -16,10 +16,14 @@ class StreamTest extends FunSuite {
     val expected = List(1, 2)
 
     assert(stream.take(2).toList == expected)
+
+    assert(stream.takeViaUnfold(2).toList == expected)
   }
 
   test("take should take whole stream is n exceeds stream size") {
     assert(stream.take(10).toList == stream.toList)
+
+    assert(stream.takeViaUnfold(10).toList == stream.toList)
   }
 
   test("drop should remove first n elements") {
@@ -84,11 +88,54 @@ class StreamTest extends FunSuite {
   }
 
   test("fibs should return fibonacci numbers") {
-    val expected = List(1 , 1 , 2 , 3 , 5 , 8)
+    val expected = List(1, 1, 2, 3, 5, 8)
 
     assert(
       Stream.fibs.take(6).toList == expected
     )
   }
 
+  test("fibs using unfold should return fibonacci numbers") {
+    val expected = List(1, 1, 2, 3, 5, 8)
+
+    assert(
+      Stream.fibsUnfold.take(6).toList == expected
+    )
+  }
+
+  test("startsWith should properly indicate") {
+    val prefix = Stream(1, 2, 3)
+
+    assert(
+      stream.startsWith(prefix)
+    )
+
+    assert(
+      !stream.startsWith(Stream(2, 3))
+    )
+
+    assert(
+      !stream.startsWith(Stream(1, 2, 3, 4, 5))
+    )
+
+  }
+
+  test("tails should work properly") {
+    val expected = List(List(1,2,3), List(2,3), List(3), List())
+
+    assert(
+      Stream(1, 2, 3).tails.toList.map(_.toList) == expected
+    )
+  }
+
+  test("hasSubSequence should work properly") {
+
+    assert(
+      stream.hasSubSequence(Stream(2, 3))
+    )
+
+    assert(
+      !stream.hasSubSequence(Stream(2, 4))
+    )
+  }
 }
