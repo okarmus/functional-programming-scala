@@ -13,6 +13,7 @@ case class Charge(cc: CreditCard, price: Double) {
       throw new Exception("Can not combine charges to different cards.")
     }
   }
+
 }
 
 class Coffee {
