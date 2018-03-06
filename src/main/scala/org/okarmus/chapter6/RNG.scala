@@ -112,6 +112,8 @@ object RNG {
   def mapUsingFlat[A, B](f: Rand[A])(g: A => B): Rand[B] = flatMap(f)(a => unit(g(a)))
 
   def map2UsingFlat[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = flatMap(ra)(a => map(rb)(b => f(a, b)))
+
+
 }
 
 object Main2 extends App {
@@ -121,6 +123,8 @@ object Main2 extends App {
   val initial = SimpleRNG(42)
 
   def rollDie: Rand[Int] = map(nonNegativeLessThan(6))(_ + 1)
+
+  rollDie(initial)
 
   /*
     println(initial.nextInt._1)
