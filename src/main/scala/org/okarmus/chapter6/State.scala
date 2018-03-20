@@ -1,5 +1,7 @@
 package org.okarmus.chapter6
 
+import org.okarmus.chapter6.RNG.SimpleRNG
+
 
 //Ex. 6.10
 case class State[S, +A](run: S => (A, S)) {
@@ -47,4 +49,7 @@ object Run extends App {
   val int: Rand[Int] = State(_.nextInt)
 
   def ints(length: Int): List[Int] = List.fill(length)(12)
+
+  println(int.run(SimpleRNG(24))._1)
+
 }

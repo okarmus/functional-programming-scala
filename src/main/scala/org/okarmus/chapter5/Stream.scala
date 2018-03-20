@@ -1,7 +1,8 @@
 package org.okarmus.chapter5
 
+import org.okarmus.chapter5.Stream._
+
 import scala.annotation.tailrec
-import Stream._
 
 trait Stream[+A] {
 
@@ -9,6 +10,12 @@ trait Stream[+A] {
     case Empty => None
     case Cons(h, _) => Some(h())
   }
+
+  def find(f: A => Boolean): Option[A] = this match {
+    case Empty => None
+    case Cons(h, t) => if (f(h())) Some(h()) else t().find(f)
+  }
+
 
   //Ex. 5.1
   def toList: List[A] = {
@@ -59,7 +66,6 @@ trait Stream[+A] {
   def append[B >: A](b: => Stream[B]): Stream[B] = this.foldRight(b)((a, acc) => cons(a, acc))
 
   def flatMap[B](f: A => Stream[B]): Stream[B] = this.foldRight(empty[B])((a, acc) => f(a) append acc)
-
 
   def takeWhile(f: A => Boolean): Stream[A] = this match {
     case Cons(h, t) if f(h()) => cons(h(), t() takeWhile f)
